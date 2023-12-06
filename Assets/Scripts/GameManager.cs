@@ -90,7 +90,6 @@ public class GameManager : MonoBehaviour
 		    while (routes[i].route.Count < c && chests.Count > 0)
 		    {
 			    int c2 = Random.Range(0, chests.Count);
-			    Debug.Log(c2 + " | " + chests.Count);
 			    routes[i].route.Add(chests[c2]);
 			    chests.RemoveAt(c2);
 		    }
