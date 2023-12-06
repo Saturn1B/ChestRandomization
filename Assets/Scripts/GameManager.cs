@@ -27,8 +27,11 @@ public class GameManager : MonoBehaviour
     public List<char> names = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
 
     public List<ChestRoute> routes = new List<ChestRoute>();
-    
-    public void Initialize()
+
+	public List<char> inventoryKey = new List<char>();
+
+
+	public void Initialize()
     {
 	    if (routes.Count > 0)
 	    {
@@ -67,7 +70,8 @@ public class GameManager : MonoBehaviour
 	    {
 		    int rdm = Random.Range(0, listName.Count);
 		    chests[i].chestName = listName[rdm];
-		    listName.RemoveAt(rdm);
+			chests[i].textName.text = listName[rdm].ToString();
+			listName.RemoveAt(rdm);
 	    }
 
 	    int r = Random.Range(2, 5);

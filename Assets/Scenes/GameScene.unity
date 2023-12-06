@@ -337,28 +337,7 @@ MonoBehaviour:
   chestPanelTransform: {fileID: 1375311192}
   prefabChest: {fileID: 6741034100996254126, guid: d8a649f411c21634bba463db749c8c6b, type: 3}
   nbChests: 10
-  chests:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  chestsTotal:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  chests: []
   keys: 4100420043004400450046004700480049004a00
   names: 4100420043004400450046004700480049004a00
   routes: []

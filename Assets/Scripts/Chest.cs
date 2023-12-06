@@ -7,12 +7,28 @@ public class Chest : MonoBehaviour
 {
     public char chestName = ' ';
     public char keyLoot = ' ';
-    public bool condition = true;
+    public bool condition;
+	bool opened;
 
-    public void Initialize(char name, char keyLoot = ' ')
-    {
-        chestName = name;
-        this.keyLoot = keyLoot;
-       
-    }
+	public TMPro.TMP_Text textName;
+
+	GameManager gameManager;
+
+	private void Awake()
+	{
+		gameManager = FindObjectOfType<GameManager>();
+		condition = true;
+	}
+
+	public void OnClick()
+	{
+        if((condition && gameManager.inventoryKey.Contains(chestName)) || !condition)
+		{
+			if(keyLoot != ' ' && !opened)
+			{
+				gameManager.inventoryKey.Add(keyLoot);
+				opened = true;
+			}
+		}
+	}
 }
