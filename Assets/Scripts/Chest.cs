@@ -11,6 +11,7 @@ public class Chest : MonoBehaviour
 	bool opened;
 
 	public TMPro.TMP_Text textName;
+	[SerializeField] Animator animator;
 
 	GameManager gameManager;
 
@@ -24,10 +25,13 @@ public class Chest : MonoBehaviour
 	{
         if((condition && gameManager.inventoryKey.Contains(chestName)) || !condition)
 		{
-			if(keyLoot != ' ' && !opened)
+			if(!opened)
 			{
-				gameManager.inventoryKey.Add(keyLoot);
+				animator.SetBool("open", true);
 				opened = true;
+
+				if (keyLoot != ' ')
+				gameManager.inventoryKey.Add(keyLoot);
 			}
 		}
 	}

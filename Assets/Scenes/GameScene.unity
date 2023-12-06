@@ -341,6 +341,7 @@ MonoBehaviour:
   keys: 4100420043004400450046004700480049004a00
   names: 4100420043004400450046004700480049004a00
   routes: []
+  inventoryKey: 
 --- !u!4 &596815295
 Transform:
   m_ObjectHideFlags: 0

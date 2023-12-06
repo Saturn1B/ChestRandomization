@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6795160428880532253}
   - component: {fileID: 6741034100996254126}
   - component: {fileID: 9112880235043027655}
+  - component: {fileID: 5274990139660746115}
   m_Layer: 5
   m_Name: Chest
   m_TagString: Untagged
@@ -95,6 +96,7 @@ MonoBehaviour:
   keyLoot: 32
   condition: 0
   textName: {fileID: 3657772131795178374}
+  animator: {fileID: 5274990139660746115}
 --- !u!114 &9112880235043027655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +153,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!95 &5274990139660746115
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5365976541250045247}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0e054f1020225034ca26d2c7d465d529, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9178056802277891988
 GameObject:
   m_ObjectHideFlags: 0
