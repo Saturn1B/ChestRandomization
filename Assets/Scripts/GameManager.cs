@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	[Header("UI")] 
+	[SerializeField]
+	private Transform ordersChestTransform;
+	[SerializeField]
+	private UIChestRouteInfo prefabChestRouteInfo;
+	
+	[Space]
+	[Header("Random")]
     public List<Chest> chests = new List<Chest>();
     public Chest[] chestsTotal;
     public List<char> keys = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
@@ -47,6 +55,10 @@ public class GameManager : MonoBehaviour
 
 		foreach (var route in routes)
 		{
+			UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
+			//TODO Remplir initialize avec l'ordre des coffres par route
+			uiInfoChest.Initialize(route.ToString());
+			
             route.route[0].condition = false;
 			for (int i = 0; i < route.route.Count; i++)
 			{
