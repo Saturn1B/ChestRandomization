@@ -12,19 +12,37 @@ public class GameManager : MonoBehaviour
 	private List<GameObject> listChestRouteInfo = new List<GameObject>();
 	
 	[Space]
-	[Header("Random")]
+	
+	[SerializeField] 
+	private Transform chestPanelTransform;
+	[SerializeField]
+	private Chest prefabChest;
+	private List<GameObject> listChest = new List<GameObject>();
+
+	[Space] [Header("Random")]
+	public int nbChests;
+    [HideInInspector] 
     public List<Chest> chests = new List<Chest>();
-    public Chest[] chestsTotal;
     public List<char> keys = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
     public List<char> names = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
 
     public List<ChestRoute> routes = new List<ChestRoute>();
-
+    
     public void Initialize()
     {
 	    if (routes.Count > 0)
 	    {
 		    routes.Clear();
+	    }
+	    
+	    if (listChest.Count > 0)
+	    {
+		    foreach (var go in listChest)
+		    {
+			    Destroy(go);
+		    }
+		    listChest.Clear();
+		    chests.Clear();
 	    }
 
 	    if (listChestRouteInfo.Count > 0)
@@ -35,12 +53,21 @@ public class GameManager : MonoBehaviour
 		    }
 		    listChestRouteInfo.Clear();
 	    }
+	    
+	    //Create chests
+	    for (int i = 0; i < nbChests; i++)
+	    {
+		    Chest chest = Instantiate(prefabChest, chestPanelTransform);
+		    listChest.Add(chest.gameObject);
+		    chests.Add(chest);
+	    }
 
-	    chests = new List<Chest>(chestsTotal);
-
+	    List<char> listName = new List<char>(names);
 	    for (int i = 0; i < chests.Count; i++)
 	    {
-		    chests[i].chestName = names[i];
+		    int rdm = Random.Range(0, listName.Count);
+		    chests[i].chestName = listName[rdm];
+		    listName.RemoveAt(rdm);
 	    }
 
 	    int r = Random.Range(2, 5);
@@ -51,7 +78,7 @@ public class GameManager : MonoBehaviour
 		    routes.Add(cr);
 	    }
 
-	    int totalChest = 10;
+	    int totalChest = nbChests;
 	    for (int i = 0; i < routes.Count; i++)
 	    {
 		    int c = 0;
