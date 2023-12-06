@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 	private Transform ordersChestTransform;
 	[SerializeField]
 	private UIChestRouteInfo prefabChestRouteInfo;
+	private List<GameObject> listChestRouteInfo = new List<GameObject>();
 	
 	[Space]
 	[Header("Random")]
@@ -19,53 +20,69 @@ public class GameManager : MonoBehaviour
 
     public List<ChestRoute> routes = new List<ChestRoute>();
 
-    // Start is called before the first frame update
-    void Start()
+    public void Initialize()
     {
-		for (int i = 0; i < chests.Count; i++)
-		{
-            chests[i].chestName = names[i];
-		}
+	    if (routes.Count > 0)
+	    {
+		    routes.Clear();
+	    }
 
-        int r = Random.Range(2, 5);
+	    if (listChestRouteInfo.Count > 0)
+	    {
+		    foreach (var go in listChestRouteInfo)
+		    {
+			    Destroy(go);
+		    }
+		    listChestRouteInfo.Clear();
+	    }
 
-		for (int i = 0; i < r; i++)
-		{
-            ChestRoute cr = new ChestRoute();
-            routes.Add(cr);
-		}
+	    chests = new List<Chest>(chestsTotal);
 
-        int totalChest = 10;
-		for (int i = 0; i < routes.Count; i++)
-		{
-            int c = 0;
-            if (i == routes.Count - 1)
-                c = totalChest;
-            else
-                c = Random.Range(2, (totalChest / 2)-1);
+	    for (int i = 0; i < chests.Count; i++)
+	    {
+		    chests[i].chestName = names[i];
+	    }
 
-			while (routes[i].route.Count < c && chests.Count > 0)
-			{
-                int c2 = Random.Range(0, chests.Count);
-                Debug.Log(c2 + " | " + chests.Count);
-                routes[i].route.Add(chests[c2]);
-                chests.RemoveAt(c2);
-			}
-        }
+	    int r = Random.Range(2, 5);
 
-		foreach (var route in routes)
-		{
-			UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
-			//TODO Remplir initialize avec l'ordre des coffres par route
-			uiInfoChest.Initialize(route.ToString());
+	    for (int i = 0; i < r; i++)
+	    {
+		    ChestRoute cr = new ChestRoute();
+		    routes.Add(cr);
+	    }
+
+	    int totalChest = 10;
+	    for (int i = 0; i < routes.Count; i++)
+	    {
+		    int c = 0;
+		    if (i == routes.Count - 1)
+			    c = totalChest;
+		    else
+			    c = Random.Range(2, (totalChest / 2)-1);
+
+		    while (routes[i].route.Count < c && chests.Count > 0)
+		    {
+			    int c2 = Random.Range(0, chests.Count);
+			    Debug.Log(c2 + " | " + chests.Count);
+			    routes[i].route.Add(chests[c2]);
+			    chests.RemoveAt(c2);
+		    }
+	    }
+
+	    foreach (var route in routes)
+	    {
+		    UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
+		    //TODO Remplir initialize avec l'ordre des coffres par route
+		    listChestRouteInfo.Add(uiInfoChest.gameObject);
+		    uiInfoChest.Initialize(route.ToString());
 			
-            route.route[0].condition = false;
-			for (int i = 0; i < route.route.Count; i++)
-			{
-                if(i < route.route.Count - 1)
-                    route.route[i].keyLoot = route.route[i + 1].chestName;
-			}
-		}
+		    route.route[0].condition = false;
+		    for (int i = 0; i < route.route.Count; i++)
+		    {
+			    if(i < route.route.Count - 1)
+				    route.route[i].keyLoot = route.route[i + 1].chestName;
+		    }
+	    }
     }
 }
 

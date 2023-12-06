@@ -7,12 +7,15 @@ using Random = UnityEngine.Random;
 
 public class SeedGenerator : MonoBehaviour
 {
-    [Space]
     [Header("UI Elements")]
-    [SerializeField] TMP_InputField seedInputField;
-    [SerializeField] TextMeshProUGUI placeHolderSeedText;
-    [SerializeField] TextMeshProUGUI seedName;
-    
+    [SerializeField] 
+    TMP_InputField seedInputField;
+    [SerializeField] 
+    TextMeshProUGUI placeHolderSeedText;
+    [SerializeField] 
+    TextMeshProUGUI seedName;
+
+    [Header("Game")]
     private int currentSeed;
 
 
