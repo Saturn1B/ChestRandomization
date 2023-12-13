@@ -106,7 +106,6 @@ public class GameManager : MonoBehaviour
 		    }
 	    }
 
-	    
 	    //Get main chest route that will have all the new branchs  
 	    ChestRoute mainChestRoute = routes.OrderByDescending(route => route.route.Count).First();
 	    
@@ -142,7 +141,7 @@ public class GameManager : MonoBehaviour
 
 		foreach (var chestGo in listChest)
 		{
-			chestGo.GetComponent<Chest>().keyLock.Clear();
+			//chestGo.GetComponent<Chest>().keyLock.Clear();
 		}
 		
 		foreach (var route in routes)
