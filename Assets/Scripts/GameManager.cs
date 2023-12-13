@@ -104,14 +104,18 @@ public class GameManager : MonoBehaviour
 		    UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
 		    //TODO Remplir initialize avec l'ordre des coffres par route
 		    listChestRouteInfo.Add(uiInfoChest.gameObject);
-		    uiInfoChest.Initialize(route.ToString());
-			
+		    
+		    string chestRoute = "";
+		    
 		    route.route[0].condition = false;
 		    for (int i = 0; i < route.route.Count; i++)
 		    {
+			    chestRoute += route.route[i].chestName;
 			    if(i < route.route.Count - 1)
 				    route.route[i].keyLoot = route.route[i + 1].chestName;
 		    }
+		    
+		    uiInfoChest.Initialize(chestRoute);
 	    }
     }
 }
