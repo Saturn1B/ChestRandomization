@@ -148,10 +148,7 @@ public class GameManager : MonoBehaviour
 						}
 					}
 				}
-				else
-				{
-					chestRoute += route.route[i].chestName;
-				}
+				chestRoute += route.route[i].chestName;
 		    }
 		    
 		    uiInfoChest.Initialize(chestRoute);
