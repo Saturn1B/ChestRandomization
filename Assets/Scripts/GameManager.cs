@@ -138,6 +138,8 @@ public class GameManager : MonoBehaviour
 				if (route.route[i].condition)
 					route.route[i].keyLock.Add(route.route[i - 1].keyLoot);
 
+				route.route[i].InitializeUI();
+
 				if (route.route[i].keyLock.Count > 1)
 				{
 					foreach (var key in route.route[i].keyLock)
