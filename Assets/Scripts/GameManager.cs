@@ -38,7 +38,11 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public UnityEvent<bool> deleteChest;
 	private bool willRemoveChest = false;
 	public void Initialize()
-    {
+	{
+		//Reset Remove Chest Button Color
+		willRemoveChest = false;
+	    buttonRemoveImage.color = willRemoveChest ? Color.gray : Color.white;
+	    
 	    if (routes.Count > 0)
 	    {
 		    routes.Clear();
@@ -143,36 +147,39 @@ public class GameManager : MonoBehaviour
 		
 		foreach (var route in routes)
 		{
-			UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
-			listChestRouteInfo.Add(uiInfoChest.gameObject);
+			if (route.route.Count > 0)
+			{
+				UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
+				listChestRouteInfo.Add(uiInfoChest.gameObject);
 		    
-			string chestRoute = "";
+				string chestRoute = "";
 		    
-		    route.route[0].condition = false;
-		    for (int i = 0; i < route.route.Count; i++)
-		    {
-			    if(i < route.route.Count)
-					route.route[i].keyLoot = route.route[i].chestName;
-
-				if (route.route[i].condition)
-					route.route[i].keyLock.Add(route.route[i - 1].keyLoot);
-
-				route.route[i].InitializeUI();
-
-				if (route.route[i].keyLock.Count > 1)
+				route.route[0].condition = false;
+				for (int i = 0; i < route.route.Count; i++)
 				{
-					foreach (var key in route.route[i].keyLock)
+					if(i < route.route.Count)
+						route.route[i].keyLoot = route.route[i].chestName;
+
+					if (route.route[i].condition)
+						route.route[i].keyLock.Add(route.route[i - 1].keyLoot);
+
+					route.route[i].InitializeUI();
+
+					if (route.route[i].keyLock.Count > 1)
 					{
-						if (!chestRoute.Contains(key))
+						foreach (var key in route.route[i].keyLock)
 						{
-							chestRoute += key;
+							if (!chestRoute.Contains(key))
+							{
+								chestRoute += key;
+							}
 						}
 					}
+					chestRoute += route.route[i].chestName;
 				}
-				chestRoute += route.route[i].chestName;
-		    }
 		    
-			uiInfoChest.Initialize(chestRoute);
+				uiInfoChest.Initialize(chestRoute);
+			}
 		}
 	}
 	
