@@ -6,6 +6,11 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Chest : MonoBehaviour
 {
+	[SerializeField]
+	Transform lockParent;
+	[SerializeField]
+	GameObject lockPrefab;
+
 	public Button buttonChest;
     public char chestName = ' ';
 	public List<char> keyLock = new List<char>();
@@ -24,6 +29,21 @@ public class Chest : MonoBehaviour
 		gameManager = FindObjectOfType<GameManager>();
 		gameManager.deleteChest.AddListener(EnableRemove);
 		condition = true;
+	}
+
+	public void InitializeUI()
+	{
+		if (!condition)
+		{
+			lockParent.parent.gameObject.SetActive(false);
+			return;
+		}
+
+		foreach (char c in keyLock)
+		{
+			GameObject go = Instantiate(lockPrefab, lockParent);
+			go.transform.GetComponentInChildren<TMPro.TMP_Text>().text = c.ToString();
+		}
 	}
 
 	public void OnClick()
