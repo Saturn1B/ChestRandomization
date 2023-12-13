@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Chest : MonoBehaviour
 {
+	public Button buttonChest;
     public char chestName = ' ';
 	public List<char> keyLock = new List<char>();
     public char keyLoot = ' ';
@@ -41,8 +43,13 @@ public class Chest : MonoBehaviour
 				opened = true;
 
 				if (keyLoot != ' ')
-				gameManager.inventoryKey.Add(keyLoot);
+					gameManager.inventoryKey.Add(keyLoot);
 			}
 		}
+	}
+
+	public void RemoveChest()
+	{
+		gameManager.RemoveChest(this);
 	}
 }

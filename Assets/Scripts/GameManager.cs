@@ -49,14 +49,7 @@ public class GameManager : MonoBehaviour
 		    chests.Clear();
 	    }
 
-	    if (listChestRouteInfo.Count > 0)
-	    {
-		    foreach (var go in listChestRouteInfo)
-		    {
-			    Destroy(go);
-		    }
-		    listChestRouteInfo.Clear();
-	    }
+
 	    
 	    //Create chests
 	    for (int i = 0; i < nbChests; i++)
@@ -120,19 +113,33 @@ public class GameManager : MonoBehaviour
 			    mainChestRoute.route[^1].keyLock.Add(route.route[^1].chestName);
 		    }
 	    }
-	    
-	    foreach (var route in routes)
-	    {
-		    UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
-		    //TODO Remplir initialize avec l'ordre des coffres par route
-		    listChestRouteInfo.Add(uiInfoChest.gameObject);
+
+	    RefreshInfoChests();
+    }
+
+	private void RefreshInfoChests()
+	{
+		if (listChestRouteInfo.Count > 0)
+		{
+			foreach (var go in listChestRouteInfo)
+			{
+				Destroy(go);
+			}
+			listChestRouteInfo.Clear();
+		}
+		
+		foreach (var route in routes)
+		{
+			UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
+			//TODO Remplir initialize avec l'ordre des coffres par route
+			listChestRouteInfo.Add(uiInfoChest.gameObject);
 		    
-		    string chestRoute = "";
+			string chestRoute = "";
 		    
-		    route.route[0].condition = false;
-		    for (int i = 0; i < route.route.Count; i++)
-		    {
-			    if(i < route.route.Count - 1)
+			route.route[0].condition = false;
+			for (int i = 0; i < route.route.Count; i++)
+			{
+				if(i < route.route.Count - 1)
 					route.route[i].keyLoot = route.route[i + 1].chestName;
 
 				if (route.route[i].condition)
@@ -152,11 +159,29 @@ public class GameManager : MonoBehaviour
 				{
 					chestRoute += route.route[i].chestName;
 				}
-		    }
+			}
 		    
-		    uiInfoChest.Initialize(chestRoute);
-	    }
-    }
+			uiInfoChest.Initialize(chestRoute);
+		}
+	}
+	
+	//Remove chest from the pool and update the game 
+	public void RemoveChest(Chest chest)
+	{
+		List<GameObject> otherListChest = new List<GameObject>(listChest);
+		otherListChest.Remove(chest.gameObject);
+		
+		foreach (var otherChest in otherListChest)
+		{
+			Chest chestObj = otherChest.GetComponent<Chest>();
+			if (chestObj.keyLock.Contains(chest.chestName))
+			{
+				chestObj.keyLock.Remove(chest.chestName);
+			}
+		}
+
+		RefreshInfoChests();
+	}
 }
 
 [System.Serializable]
