@@ -45,8 +45,13 @@ public class GameManager : MonoBehaviour
 		//Reset Remove Chest Button Color
 		willRemoveChest = false;
 	    buttonRemoveImage.color = willRemoveChest ? Color.gray : Color.white;
-	    
-	    if (routes.Count > 0)
+
+		if (availableNames.Count > 0)
+		{
+			availableNames.Clear();
+		}
+
+		if (routes.Count > 0)
 	    {
 		    routes.Clear();
 	    }
