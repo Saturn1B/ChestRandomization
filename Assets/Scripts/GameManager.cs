@@ -26,15 +26,18 @@ public class GameManager : MonoBehaviour
 	public int nbChests;
     [HideInInspector] 
     public List<Chest> chests = new List<Chest>();
-    public List<char> keys = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
     public List<char> names = new List<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+	public List<char> availableNames = new List<char>();
 
-    public List<ChestRoute> routes = new List<ChestRoute>();
+	public List<ChestRoute> routes = new List<ChestRoute>();
 
 	public List<char> inventoryKey = new List<char>();
 
 	[Space] [Header("Chest Suppression")]
 	public Image buttonRemoveImage;
+	public Button buttonAddStatus;
+	public Button buttonGenerateStatus;
+	public Color inactive, active;
 	[HideInInspector] public UnityEvent<bool> deleteChest;
 	private bool willRemoveChest = false;
 	public void Initialize()
@@ -187,6 +190,42 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
+	public void AddChest()
+	{
+		if (availableNames.Count <= 0) return;
+
+		Chest chest = Instantiate(prefabChest, chestPanelTransform);
+		listChest.Add(chest.gameObject);
+
+		int rn = Random.Range(0, availableNames.Count);
+		chest.chestName = availableNames[rn];
+		chest.textName.text = availableNames[rn].ToString();
+		availableNames.RemoveAt(rn);
+
+		ChestRoute selectedRoute = new ChestRoute();
+		bool found = false;
+
+		foreach (var route in routes)
+		{
+			if (route.route.Count == 0)
+			{
+				selectedRoute = route;
+				found = true;
+			}
+		}
+
+		if (!found)
+		{
+			int rr = Random.Range(0, routes.Count);
+			selectedRoute = routes[rr];
+		}
+		else chest.condition = false;
+
+		selectedRoute.route.Add(chest);
+
+		RefreshInfoChests();
+	}
+
 	//Remove chest from the pool and update the game 
 	public void RemoveChest(Chest chest)
 	{
@@ -216,6 +255,8 @@ public class GameManager : MonoBehaviour
 		listChest.Remove(chest.gameObject);
 		
 		RefreshInfoChests();
+
+		availableNames.Add(chest.chestName);
 				
 		//Remove chest from the game 
 		Destroy(chest.gameObject);
@@ -225,7 +266,9 @@ public class GameManager : MonoBehaviour
 	{
 		deleteChest.Invoke(!willRemoveChest);
 		willRemoveChest = !willRemoveChest;
-		buttonRemoveImage.color = willRemoveChest ? Color.gray : Color.white;
+		buttonRemoveImage.color = willRemoveChest ? active : inactive;
+		buttonAddStatus.interactable = willRemoveChest ? false : true;
+		buttonGenerateStatus.interactable = willRemoveChest ? false : true;
 	}
 }
 
