@@ -6,6 +6,7 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     public char chestName = ' ';
+	public List<char> keyLock = new List<char>();
     public char keyLoot = ' ';
     public bool condition;
 	bool opened;
@@ -23,7 +24,16 @@ public class Chest : MonoBehaviour
 
 	public void OnClick()
 	{
-        if((condition && gameManager.inventoryKey.Contains(chestName)) || !condition)
+		bool hasKeys = true;
+		foreach (char c in keyLock)
+		{
+			if (!gameManager.inventoryKey.Contains(c))
+			{
+				hasKeys = false;
+			}
+		}
+
+        if((condition && hasKeys) || !condition)
 		{
 			if(!opened)
 			{
