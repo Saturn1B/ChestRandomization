@@ -18,33 +18,42 @@ public class Chest : MonoBehaviour
 
 	GameManager gameManager;
 
+	private bool willBeRemoved;
 	private void Awake()
 	{
 		gameManager = FindObjectOfType<GameManager>();
+		gameManager.deleteChest.AddListener(EnableRemove);
 		condition = true;
 	}
 
 	public void OnClick()
 	{
-		bool hasKeys = true;
-		foreach (char c in keyLock)
+		if (!willBeRemoved)
 		{
-			if (!gameManager.inventoryKey.Contains(c))
+			bool hasKeys = true;
+			foreach (char c in keyLock)
 			{
-				hasKeys = false;
+				if (!gameManager.inventoryKey.Contains(c))
+				{
+					hasKeys = false;
+				}
+			}
+
+			if((condition && hasKeys) || !condition)
+			{
+				if(!opened)
+				{
+					animator.SetBool("open", true);
+					opened = true;
+
+					if (keyLoot != ' ')
+						gameManager.inventoryKey.Add(keyLoot);
+				}
 			}
 		}
-
-        if((condition && hasKeys) || !condition)
+		else
 		{
-			if(!opened)
-			{
-				animator.SetBool("open", true);
-				opened = true;
-
-				if (keyLoot != ' ')
-					gameManager.inventoryKey.Add(keyLoot);
-			}
+			RemoveChest();
 		}
 	}
 
@@ -52,4 +61,10 @@ public class Chest : MonoBehaviour
 	{
 		gameManager.RemoveChest(this);
 	}
+
+	private void EnableRemove(bool value)
+	{
+		willBeRemoved = value;
+	}
+	
 }

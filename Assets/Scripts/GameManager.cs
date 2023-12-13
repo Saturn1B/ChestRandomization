@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,7 +33,10 @@ public class GameManager : MonoBehaviour
 
 	public List<char> inventoryKey = new List<char>();
 
-
+	[Space] [Header("Chest Suppression")]
+	public Image buttonRemoveImage;
+	[HideInInspector] public UnityEvent<bool> deleteChest;
+	private bool willRemoveChest = false;
 	public void Initialize()
     {
 	    if (routes.Count > 0)
@@ -49,7 +54,10 @@ public class GameManager : MonoBehaviour
 		    chests.Clear();
 	    }
 
-
+	    if (inventoryKey.Count > 0)
+	    {
+		    inventoryKey.Clear();
+	    }
 	    
 	    //Create chests
 	    for (int i = 0; i < nbChests; i++)
@@ -127,20 +135,24 @@ public class GameManager : MonoBehaviour
 			}
 			listChestRouteInfo.Clear();
 		}
+
+		foreach (var chestGo in listChest)
+		{
+			chestGo.GetComponent<Chest>().keyLock.Clear();
+		}
 		
 		foreach (var route in routes)
 		{
 			UIChestRouteInfo uiInfoChest = Instantiate(prefabChestRouteInfo, ordersChestTransform);
-			//TODO Remplir initialize avec l'ordre des coffres par route
 			listChestRouteInfo.Add(uiInfoChest.gameObject);
 		    
 			string chestRoute = "";
 		    
-			route.route[0].condition = false;
-			for (int i = 0; i < route.route.Count; i++)
-			{
-				if(i < route.route.Count - 1)
-					route.route[i].keyLoot = route.route[i + 1].chestName;
+		    route.route[0].condition = false;
+		    for (int i = 0; i < route.route.Count; i++)
+		    {
+			    if(i < route.route.Count)
+					route.route[i].keyLoot = route.route[i].chestName;
 
 				if (route.route[i].condition)
 					route.route[i].keyLock.Add(route.route[i - 1].keyLoot);
@@ -155,11 +167,8 @@ public class GameManager : MonoBehaviour
 						}
 					}
 				}
-				else
-				{
-					chestRoute += route.route[i].chestName;
-				}
-			}
+				chestRoute += route.route[i].chestName;
+		    }
 		    
 			uiInfoChest.Initialize(chestRoute);
 		}
@@ -171,6 +180,7 @@ public class GameManager : MonoBehaviour
 		List<GameObject> otherListChest = new List<GameObject>(listChest);
 		otherListChest.Remove(chest.gameObject);
 		
+		//Remove keyLock index of selected chest from other chests
 		foreach (var otherChest in otherListChest)
 		{
 			Chest chestObj = otherChest.GetComponent<Chest>();
@@ -180,7 +190,29 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
+		//Remove chest from route
+		foreach (var route in routes)
+		{
+			if (route.route.Contains(chest))
+			{
+				route.route.Remove(chest);
+			}
+		}
+		
+		//Remove chest from listChest
+		listChest.Remove(chest.gameObject);
+		
 		RefreshInfoChests();
+				
+		//Remove chest from the game 
+		Destroy(chest.gameObject);
+	}
+
+	public void WillRemoveChest()
+	{
+		deleteChest.Invoke(!willRemoveChest);
+		willRemoveChest = !willRemoveChest;
+		buttonRemoveImage.color = willRemoveChest ? Color.gray : Color.white;
 	}
 }
 
