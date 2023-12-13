@@ -123,18 +123,22 @@ public class GameManager : MonoBehaviour
 		    uiInfoChest.Initialize(chestRoute);
 	    }
 
-	    // ChestRoute mainChestRoute = routes.OrderByDescending(route => route.route.Count).First();
-	    //
-	    // List<ChestRoute> otherRoutes = new List<ChestRoute>(routes);
-	    // otherRoutes.Remove(mainChestRoute);
-	    //
-	    // foreach (var route in otherRoutes)
-	    // {
-		   //  if (route.route.Count < mainChestRoute.route.Count)
-		   //  {
-			  //   route.route[route.route.Count].
-		   //  }
-	    // }
+	    ChestRoute mainChestRoute = routes.OrderByDescending(route => route.route.Count).First();
+	    
+	    List<ChestRoute> otherRoutes = new List<ChestRoute>(routes);
+	    otherRoutes.Remove(mainChestRoute);
+	    
+	    foreach (var route in otherRoutes)
+	    {
+		    if (route.route.Count < mainChestRoute.route.Count)
+		    {
+			    mainChestRoute.route[route.route.Count].keyLock.Add(route.route[^1].chestName);
+		    }
+		    else
+		    {
+			    mainChestRoute.route[^1].keyLock.Add(route.route[^1].chestName);
+		    }
+	    }
     }
 }
 
