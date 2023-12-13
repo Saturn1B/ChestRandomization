@@ -114,8 +114,11 @@ public class GameManager : MonoBehaviour
 		    {
 			    chestRoute += route.route[i].chestName;
 			    if(i < route.route.Count - 1)
-				    route.route[i].keyLoot = route.route[i + 1].chestName;
-		    }
+					route.route[i].keyLoot = route.route[i + 1].chestName;
+
+				if (route.route[i].condition)
+					route.route[i].keyLock.Add(route.route[i - 1].keyLoot);
+			}
 		    
 		    uiInfoChest.Initialize(chestRoute);
 	    }
