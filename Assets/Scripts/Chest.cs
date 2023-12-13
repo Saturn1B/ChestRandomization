@@ -11,6 +11,8 @@ public class Chest : MonoBehaviour
 	[SerializeField]
 	GameObject lockPrefab;
 
+	public GameObject deletePanel;
+
 	public Button buttonChest;
     public char chestName = ' ';
 	public List<char> keyLock = new List<char>();

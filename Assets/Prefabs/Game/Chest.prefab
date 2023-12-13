@@ -277,6 +277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lockParent: {fileID: 542776157939678028}
   lockPrefab: {fileID: 9109826483534316326, guid: 5bdf5b4b99f4c8e4485af8a54ab9e323, type: 3}
+  deletePanel: {fileID: 6649751287491396475}
   buttonChest: {fileID: 9112880235043027655}
   chestName: 32
   keyLock: 

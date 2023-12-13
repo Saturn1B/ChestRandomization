@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 	{
 		//Reset Remove Chest Button Color
 		willRemoveChest = false;
-	    buttonRemoveImage.color = willRemoveChest ? Color.gray : Color.white;
+	    buttonRemoveImage.color = willRemoveChest ? active : inactive;
 
 		if (availableNames.Count > 0)
 		{
@@ -274,6 +274,14 @@ public class GameManager : MonoBehaviour
 		buttonRemoveImage.color = willRemoveChest ? active : inactive;
 		buttonAddStatus.interactable = willRemoveChest ? false : true;
 		buttonGenerateStatus.interactable = willRemoveChest ? false : true;
+
+		foreach (var route in routes)
+		{
+			foreach (var chest in route.route)
+			{
+				chest.deletePanel.SetActive(willRemoveChest ? true : false);
+			}
+		}
 	}
 }
 
