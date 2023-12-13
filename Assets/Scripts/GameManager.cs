@@ -106,24 +106,7 @@ public class GameManager : MonoBehaviour
 		    }
 	    }
 
-	    //Get main chest route that will have all the new branchs  
-	    ChestRoute mainChestRoute = routes.OrderByDescending(route => route.route.Count).First();
-	    
-	    List<ChestRoute> otherRoutes = new List<ChestRoute>(routes);
-	    otherRoutes.Remove(mainChestRoute);
-	    
-	    //Get the count of the other routes and make them linked to the +1 of the main route (same index if the other route has the same length as the main one)
-	    foreach (var route in otherRoutes)
-	    {
-		    if (route.route.Count < mainChestRoute.route.Count)
-		    {
-			    mainChestRoute.route[route.route.Count].keyLock.Add(route.route[^1].chestName);
-		    }
-		    else
-		    {
-			    mainChestRoute.route[^1].keyLock.Add(route.route[^1].chestName);
-		    }
-	    }
+
 
 	    RefreshInfoChests();
     }
@@ -141,9 +124,31 @@ public class GameManager : MonoBehaviour
 
 		foreach (var chestGo in listChest)
 		{
-			//chestGo.GetComponent<Chest>().keyLock.Clear();
+			chestGo.GetComponent<Chest>().keyLock.Clear();
 		}
-		
+
+		//Get main chest route that will have all the new branchs  
+		ChestRoute mainChestRoute = routes.OrderByDescending(route => route.route.Count).First();
+
+		List<ChestRoute> otherRoutes = new List<ChestRoute>(routes);
+		otherRoutes.Remove(mainChestRoute);
+
+		//Get the count of the other routes and make them linked to the +1 of the main route (same index if the other route has the same length as the main one)
+		foreach (var route in otherRoutes)
+		{
+			if(route.route.Count > 0)
+			{
+				if (route.route.Count < mainChestRoute.route.Count)
+				{
+					mainChestRoute.route[route.route.Count].keyLock.Add(route.route[^1].chestName);
+				}
+				else
+				{
+					mainChestRoute.route[^1].keyLock.Add(route.route[^1].chestName);
+				}
+			}
+		}
+
 		foreach (var route in routes)
 		{
 			if (route.route.Count > 0)
