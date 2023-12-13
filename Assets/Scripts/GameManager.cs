@@ -132,8 +132,8 @@ public class GameManager : MonoBehaviour
 		    route.route[0].condition = false;
 		    for (int i = 0; i < route.route.Count; i++)
 		    {
-			    if(i < route.route.Count - 1)
-					route.route[i].keyLoot = route.route[i + 1].chestName;
+			    if(i < route.route.Count)
+					route.route[i].keyLoot = route.route[i].chestName;
 
 				if (route.route[i].condition)
 					route.route[i].keyLock.Add(route.route[i - 1].keyLoot);
