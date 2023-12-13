@@ -33,6 +33,11 @@ public class Chest : MonoBehaviour
 
 	public void InitializeUI()
 	{
+		foreach (Transform child in lockParent)
+		{
+			Destroy(child.gameObject);
+		}
+
 		if (!condition)
 		{
 			lockParent.parent.gameObject.SetActive(false);
