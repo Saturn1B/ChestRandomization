@@ -255,6 +255,10 @@ public class GameManager : MonoBehaviour
 				route.route.Remove(chest);
 			}
 		}
+
+		//Remove key from inventory if chest is open
+		if (chest.opened)
+			inventoryKey.Remove(chest.chestName);
 		
 		//Remove chest from listChest
 		listChest.Remove(chest.gameObject);

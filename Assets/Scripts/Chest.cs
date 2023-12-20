@@ -18,7 +18,7 @@ public class Chest : MonoBehaviour
 	public List<char> keyLock = new List<char>();
     public char keyLoot = ' ';
     public bool condition;
-	bool opened;
+	public bool opened;
 
 	public TMPro.TMP_Text textName;
 	[SerializeField] Animator animator;
